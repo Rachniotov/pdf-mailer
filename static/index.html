@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+		  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="style.css">
+	<title>test app</title>
+</head>
+<body>
+    <h2>Input Details</h2>
+    <form>
+		<div class="column">
+			<label for="name">Enter name here</label>
+		</div>
+		<input type="text" id="name">
+		<br>
+
+		<div class="column">
+			<label for="email">Enter email here</label>
+		</div>
+		<input type="email" id="email">
+		<br>
+
+		<div class="column">
+			<label for="address">Enter address here</label>
+		</div>
+        <input type="text" id="address">
+		<br>
+
+		<div class="column">
+			<label for="phone">Enter phone number here</label>
+		</div>
+		<input type="tel" id="phone">
+		<br><br>
+
+		<div class="column">
+			<label for="range">Select required numbers of copies : 6</label>
+		</div>
+        <input type="range" id="range" max="9">
+		<br><br>
+
+        <button>Submit</button>
+		<div class="hidden" id="img">
+			<img src="https://cdn.discordapp.com/emojis/780227862090481684.gif?v=1" alt="loading...">
+		</div>
+
+    </form>
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+	const socket = io();
+	document.querySelector('body>form>input[type=range]').addEventListener('input', e => {
+		document.querySelector('body>form>div>label[for=range]').innerText = `Select required numbers of copies : ${parseInt(e.target.value) + 1}`
+	});
+
+	document.querySelector('body>form>button').addEventListener('click', e => {
+		e.preventDefault();
+
+		let name = document.querySelector('body>form>input#name').value;
+		let mail = document.querySelector('body>form>input#email').value;
+		let number = document.querySelector('body>form>input#range').value;
+		let address = document.querySelector('body>form>input#address').value;
+		let phone = document.querySelector('body>form>input#phone').value;
+
+		if (name.length < 1) {
+			return window.alert('provide a name');
+		}
+		if (mail.length < 1) {
+			return window.alert('provide a email');
+		}
+		if (address.length < 1) {
+			return window.alert('provide an address');
+		}
+		if (phone.length < 1) {
+			return window.alert('provide an phone number');
+		}
+
+		document.querySelector('body>form>div#img').className = 'shown';
+
+		socket.emit('dataTransport', {
+			name,
+			mail,
+			address,
+			phone,
+			number: parseInt(number) + 1
+		});
+
+	});
+	socket.on('success', () => {
+		console.log('ez')
+		document.querySelector('body>form>div#img').innerHTML = '<h2 style="color: green">Success! check your inbox!</h2>'
+	});
+	socket.on('badMail', () => {
+		console.log('AAAAAA');
+		document.querySelector('body>form>div#img').innerHTML = '<h2 style="color: red">Failed! Seems like your email is wrong, refresh the page and try again</h2>'
+	});
+</script>
+</html>

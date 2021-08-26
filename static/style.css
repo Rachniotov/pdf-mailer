@@ -1,0 +1,13 @@
+.column {
+    padding-top: 8px;
+}
+
+button {
+    padding: 5px 20px 5px;
+    border-color: lavender;
+    border-radius: 5px;
+}
+
+.hidden {
+    display: none;
+}
