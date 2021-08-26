@@ -3,8 +3,10 @@ const socketio = require('socket.io');
 const sendMail = require('./mail.js')
 
 const app = express();
-let webserver = app.listen(8080, () => {
-	console.log('app is running');
+const port = '8080';
+
+let webserver = app.listen(port, () => {
+	console.log(`app is running on port ${port}`);
 });
 const io = new socketio.Server(webserver);
 
