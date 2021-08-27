@@ -2,7 +2,7 @@ const mailer = require("nodemailer");
 const generatePDF =  require('./generatePDF');
 
 let mail = '';	// <----- enter creds
-let pass = '';	// <----- enter creds
+let pass = '';	// <----- enter creds https://support.google.com/accounts/answer/185833#app-passwords?p=InvalidSecondFactor
 
 let sendMail = async (data) => {
 	if (mail.length < 1) {
@@ -20,7 +20,7 @@ let sendMail = async (data) => {
 			service: 'gmail',
 			auth: {
 				user: mail,
-				pass: pass,	// https://support.google.com/accounts/answer/185833#app-passwords?p=InvalidSecondFactor
+				pass: pass,
 			},
 		});
 
